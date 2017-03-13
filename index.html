@@ -2,9 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Vue.js: Not just another SPA library</title>
+
+    <meta name="description" content="A talk on getting started with Vue.js 2.x">
+    <meta name="author" content="Rob Ribeiro">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/moon.css">
@@ -24,8 +31,288 @@
 <body>
 <div class="reveal">
     <div class="slides">
-        <section>Slide 1</section>
-        <section>Slide 2</section>
+        <section data-markdown>
+            <script type="text/template">
+                # Vue.js
+                ## Not just another SPA library
+
+                Rob Ribeiro
+
+                @azurelogic
+
+                https://azurelogic.com
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## About me
+
+                - DevOps Engineer @ Trek10
+                - This is my 6th talk for LV
+                - I <3 JavaScript
+                - Current obsession: Breath of the Wild
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## SPA???
+
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Zen_SPA_Japanese_pool.jpg" alt="Drawing" style="height: 50vh"/>
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Brief (and incomplete) history of SPAs
+
+                - December 1995: VanillaJS ;)
+                - March 2005: Dojo Toolkit
+                - 2010: Knockout, Backbone, Angular 1
+                - December 2011: Ember
+                - March 2013: React
+                - February 2014: Vue 1
+                - September 2016: Angular 2, Vue 2
+                - Others I'm too lazy to find: Mithril, Cycle, Preact, Inferno, Aurelia
+
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## [Vue.js](https://vuejs.org)
+
+                - Created by Evan You
+                    - Xoogler, ex-meteorjs
+                - 18 kb minified and gzipped
+                - Angular 1-like templates
+                - Virtual DOM like React
+                - Flux pattern via Vuex
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Vue compared
+
+                - Similar algorithms to React, but faster, lighter, and more automatic
+                    - No `shouldComponentUpdate` due to dependency tracking
+                - Support both HTML templates and JSX
+                - Use with or without ES2015+ or modern tooling like Webpack, ESLint, and other modern tooling
+                - One way data flow avoids complexity
+                - TypeScript friendly
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## [Library sizes minified and gzipped](https://gist.github.com/Restuta/cda69e50a853aa64912d)
+                Name  | Size
+                ------------- | -------------
+                Ember 2.2.0     | 111K
+                Angular 2       | 111K
+                Angular 1.4.5   |    51K
+                React 15.3.0 + React DOM | 43K
+                Vue 2.0.3 | **23K**
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## [Benchmarks](http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html)
+                <iframe src="http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html" style="height: 50vh; width: 70vw; background: white;"></iframe>
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Enough about the past. Let's talk
+                # /^vue(?:x)?$/
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Tooling
+
+                - [vuex](https://github.com/vuejs/vuex)
+                - [vue-router](https://github.com/vuejs/vue-router)
+                - [vue-cli](https://github.com/vuejs/vue-cli)
+                - [Vue.js devtools for Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+                - [Awesome Vue](https://github.com/vuejs/awesome-vue)
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Bootstrapping
+
+
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Templates
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Filters
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Components
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Data()
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Props: {}
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Single file components
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Inner mechanics
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Slots and Refs
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Computed: {}
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Conditionals
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Lists
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Styling
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Events
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Lifecycle Hooks
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Forms
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Render functions
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## SSR/prerendering
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                # Vuex
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Flux
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Vuex
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Bootstrapping
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## State
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## The first rule of Vuex:
+                # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Getters
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Mutations
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## The second rule of Vuex:
+                # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Actions
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Modules
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Forms again
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Application structure
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Routing
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                # Thanks!
+                ## Questions?
+            </script>
+        </section>
+        <section data-markdown>
+            <script type="text/template">
+                ## Recommended resources
+
+                - Quasar
+                - Vuex book
+                - vue-router book
+            </script>
+        </section>
     </div>
 </div>
 
