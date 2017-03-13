@@ -21,11 +21,11 @@
 
     <!-- Printing and PDF exports -->
     <script>
-      var link = document.createElement( 'link' );
+      var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-      document.getElementsByTagName( 'head' )[0].appendChild( link );
+      link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
     </script>
 </head>
 <body>
@@ -102,6 +102,7 @@
         <section data-markdown>
             <script type="text/template">
                 ## [Library sizes minified and gzipped](https://gist.github.com/Restuta/cda69e50a853aa64912d)
+
                 Name  | Size
                 ------------- | -------------
                 Ember 2.2.0     | 111K
@@ -114,7 +115,14 @@
         <section data-markdown>
             <script type="text/template">
                 ## [Benchmarks](http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html)
-                <iframe src="http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html" style="height: 50vh; width: 70vw; background: white;"></iframe>
+
+                Library | Mean slowdown | Library | Mean slowdown
+                ------------- | ------------- | ------------- | -------------
+                vanillajs | 1.00 | inferno | 1.07
+                vue 2 | 1.37 | aurelia | 1.66
+                vue 1 | 2.16 | mithril | 1.83
+                angular 1.5 | 2.62 | react 15.3 | 1.82
+                angular 2 | 1.85 | cyclejs 7 | 1.48
             </script>
         </section>
         <section data-markdown>
