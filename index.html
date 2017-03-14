@@ -59,9 +59,10 @@
         ## About me
 
         - DevOps Engineer @ Trek10
+        - MS in Applied Math and CS from IUSB
         - This is my 6th talk for LV
         - I <3 JavaScript
-        - Current obsession: Breath of the Wild
+        - Current obsession === Legend of Zelda: Breath of the Wild
       </script>
     </section>
     <section data-markdown>
@@ -74,7 +75,7 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Brief (and incomplete) history of SPAs
+        ## Brief (and incomplete) history of SPA libraries
 
         - December 1995: VanillaJS ;)
         - March 2005: Dojo Toolkit
@@ -97,6 +98,8 @@
         - Angular 1-like templates
         - Virtual DOM like React
         - Flux pattern via Vuex
+        - Neither prescriptive, nor monolithic
+          - So much so that this presentation contains multiple Vue apps!
       </script>
     </section>
     <section data-markdown>
@@ -157,7 +160,7 @@
       <script type="text/template">
         ## Bootstrapping
 
-        <div style="float: left; width: 60%;">
+        <div style="float: left; width: 70%;">
         <pre><code>&lt;div id="app1"&gt;
           {{ message }}
         &lt;/div&gt;
@@ -174,7 +177,7 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 40%;">
+        <div class="vue-output" style="float: right; width: 30%;">
           <div id="app1">
             {{ message }}
           </div>
@@ -209,7 +212,7 @@
       <script type="text/template">
         ## Templates
 
-        <div style="float: left; width: 60%;">
+        <div style="float: left; width: 70%;">
         <pre><code>&lt;div id="app2"&gt;
           &lt;a :href="url"&gt;{{ destination }}&lt;/a&gt;
         &lt;/div&gt;
@@ -225,7 +228,7 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 40%;">
+        <div class="vue-output" style="float: right; width: 30%;">
           <div id="app2">
             <a :href="url">{{ destination }}</a>
           </div>
@@ -257,7 +260,6 @@
         <aside class="notes">
           - global registration makes the registered component available to all other components <br />
           - componentType for dynamic rendering can be string component name or actual component reference <br />
-
         </aside>
       </script>
     </section>
@@ -279,7 +281,7 @@
         &lt;script&gt;
           import CardHeader from './CardHeader';
           export default {
-            name: 'Card',
+            name: 'card',
             components: { CardHeader },
             data() { return { user: 'Alice', bodyText: 'Hello world!' }; }
           };
@@ -292,83 +294,192 @@
           - Name is used for debugging <br />
           - CSS only applies while component is part of current DOM
           - Scoped CSS option: when scoped, styles only apply within the component <br />
-
         </aside>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         <h1>STOP!!!</h1>
-        <h1 class="fragment">GO BACK!</h1>
-        <div class="inline">
-          <h2 class="fragment">Didn't</h2>
-          <h2 class="fragment">he</h2>
-          <h2 class="fragment">do</h2>
-          <h2 class="fragment">app1.message?</h2>
-        </div>
-        <div class="inline">
-          <h2 class="fragment">Shouldn't</h2>
-          <h2 class="fragment">that</h2>
-          <h2 class="fragment">be</h2>
-          <h2 class="fragment">app1.data().message???</h2>
-        </div>
+        <h2 class="fragment">How did app1.message work???</h2>
+        <h2 class="fragment">Shouldn't it be app1.data.message or app1.data().message?</h2>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         # Nope.
-        1) data is an object on the root Vue instance
-        2) things are not what you think they are
+        1. `data` is an object on the root Vue instance
+        2. Even with components, things are not what you think they are
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## How the sausage is made
 
-        - Components are defined with POJOs
-        - Vue mangles all of your code with getter and setters for change tracking
+        - Root instance and components are defined with POJOs
+        - Vue mangles all of your code with getter and setters for reactivity via change tracking
         - Your data, computed properties, props, and methods become part of the component instance
+          - originals are preserved with `$` prefixes, e.g.: `app.$data`
         - Locally registered components and filters are available to the template as well
         - Problem 1: `this`, `=>`, and lexical binding
         - Problem 2: Adding new properties after the component is defined
 
         ```
-        var vm = new Vue({
-        data: {
-        a: 1
-        }
-        })
-        // `vm.a` is now reactive
-        vm.b = 2
-        // `vm.b` is NOT reactive
+        var app = new Vue({ data: { a: 1, foo: {} } })
+        // app.a and app.foo are reactive
+        app.b = 2 // app.b is NOT reactive and there's no way to make it reactive
+        app.foo.x = 2 // app.foo.x is NOT reactive
+        Vue.set(app.foo, 'x', 2) // app.foo.x is now reactive
+        ```
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Component object structure
 
         ```
+        {
+          name: 'card', // used for debugging and recursion
+          components: { CardHeader },
+          template: '...',
+          data() { return {...}; },
+          props: {...},
+          filters: {...}, // {{ timestamp | datetimeFilter }}
+          computed: {...}, // fullName() { return this.firstName + ' ' + this.lastName; }
+          methods: {...},
+          mounted() {...} // or other lifecycle event
+        }
+        ```
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Props
 
+        - Avoid referencing parent components to maximize reuse
+        - Props allow data to be passed down to children
+        - One way!
+        - Can bind them in to reactively pass changing data down or to retain data type
+        - camelCase props become kebab-case attributes
+        - Prop declaration can include validation: type, required, default, validator
+
+        ```
+        props: ['userName', 'message'],
+        ```
+
+        ```
+        props: {
+          userName: String,
+          timestamp: { type: [Number, String], required: true, default: Date.now() },
+          message: { type: String, default() { return 'OMG I FORGOT A MESSAGE!!!' } }
+        },
+        ```
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Data()
+        ## Props
+
+        <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="app3"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var stringRenderer = {
+            name: 'string-renderer',
+            props: { toRender: String },
+            template: '<div>{{ toRender }}</div>'
+          };
+
+          var app3 = new Vue({
+            el: '#app3',
+            data: { text: 'Finish presentation', },
+            components: { stringRenderer },
+            template: '<div><string-renderer :to-render="text">'
+              + '</string-renderer></div>',
+          });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 30%;">
+          <div id="app3"></div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          var stringRenderer = {
+            name: 'string-renderer',
+            props: { toRender: String },
+            template: '<div>{{ toRender }}</div>'
+          };
+
+          app3 = new Vue({
+            el: '#app3',
+            data: { text: 'Finish presentation', },
+            components: { stringRenderer },
+            template: '<string-renderer :to-render="text"></string-renderer>',
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Props: {}
+        ## Styling
+
+        <div class="clearfix">
+        <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="app4"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var stringRenderer = {
+            props: { toRender: String },
+            data() { return { isRed: false }; },
+            template: '<div :class="{ red: isRed }">{{ toRender }}</div>',
+            mounted() {
+              var self = this;
+              setInterval(function() { self.isRed = !self.isRed; }, 500);
+            }
+          };
+
+          app4 = new Vue({
+            el: '#app4',
+            data: { text: 'Finish presentation' },
+            components: { renderer: stringRenderer },
+            template: '<renderer :to-render="text"></renderer>',
+          });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 30%;">
+          <div id="app4"></div>
+        </div>
+        </div>
+
+        - Can even bind classes/styles on components, e.g.: `<card :class="{ red: isRed }"></card>`
+          - Applied to root element of template
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          var stringRenderer = {
+            props: { toRender: String },
+            data() { return { isRed: false }; },
+            template: '<div :class="{ red: isRed }">{{ toRender }}</div>',
+            mounted() {
+              var self = this;
+              setInterval(function() { self.isRed = !self.isRed; }, 1000);
+            }
+          };
+
+          app4 = new Vue({
+            el: '#app4',
+            data: { text: 'Finish presentation' },
+            components: { stringRenderer },
+            template: '<string-renderer :to-render="text"></string-renderer>',
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Computed: {}
-      </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
-        ## Filters
-      </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
-        ## Slots
+        ## Forms
       </script>
     </section>
     <section data-markdown>
@@ -383,12 +494,12 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Styling
+        ## Events and methods
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Events
+        ## Computed properties
       </script>
     </section>
     <section data-markdown>
@@ -398,7 +509,46 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Forms
+        ## Slots
+
+        - What if you wanted a component that could act as a container for some other markup or component?
+        - Angular called this "transclusion"
+        - All template expressions are evaluated against the matching component instance
+
+        <pre><code>&lt;template&gt;
+          &lt;div class="card-stuff"&gt;
+            &lt;slot name="header"&gt;&lt;/slot&gt;
+            &lt;slot&gt;&lt;/slot&gt;
+          &lt;/div&gt;
+        &lt;/template&gt;
+
+        &lt;script&gt;
+          export default {
+            name: 'card',
+          };
+        &lt;/script&gt;</code></pre>
+
+        <pre><code>&lt;card&gt;
+            &lt;card-header slot="header"&gt;&lt;/card-header&gt;
+            &lt;span&gt;{{ message }}&lt;/span&gt;
+        &lt;/card&gt;</code></pre>
+
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Advanced topics we missed
+
+        - Refs
+        - Filters
+        - Custom directives
+        - Transition effects
+        - Render functions
+        - Mixins
+        - Plugins
+        - Server side rendering
+        - Unit testing
+        - Deployment
       </script>
     </section>
     <section data-markdown>
@@ -475,7 +625,7 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        # Thanks!
+        # Thanks for listening!
         ## Questions?
       </script>
     </section>

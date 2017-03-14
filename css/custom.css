@@ -23,3 +23,13 @@
 .reveal .inline .fragment {
     display: inline-block;
 }
+
+.clearfix:after {
+    content:" ";
+    display:block;
+    clear:both;
+}
+
+.red {
+    color: red;
+}
