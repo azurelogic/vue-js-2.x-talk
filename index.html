@@ -1,345 +1,525 @@
 <!doctype html>
-<html>
+<!--suppress HtmlUnknownAttribute -->
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
 
-    <title>Vue.js: Not just another SPA library</title>
+  <title>Vue.js: Not just another SPA library</title>
 
-    <meta name="description" content="A talk on getting started with Vue.js 2.x">
-    <meta name="author" content="Rob Ribeiro">
+  <meta name="description" content="A talk on getting started with Vue.js 2.x">
+  <meta name="author" content="Rob Ribeiro">
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/moon.css">
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/moon.css">
+  <link rel="stylesheet" href="css/custom.css">
 
-    <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
 
-    <!-- Printing and PDF exports -->
-    <script>
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
-      document.getElementsByTagName('head')[0].appendChild(link);
-    </script>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+
+  <script src="js/vue.js"></script>
+  <script src="js/vuex.js"></script>
+
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.js"></script>
+
+  <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 </head>
 <body>
 <div class="reveal">
-    <div class="slides">
-        <section data-markdown>
-            <script type="text/template">
-                # Vue.js
-                ## Not just another SPA library
+  <div class="slides">
+    <section data-markdown>
+      <script type="text/template">
+        # Vue.js
+        ## Not just another SPA library
 
-                Rob Ribeiro
+        Rob Ribeiro
 
-                @azurelogic
+        @azurelogic
 
-                https://azurelogic.com
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## About me
+        https://azurelogic.com
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## About me
 
-                - DevOps Engineer @ Trek10
-                - This is my 6th talk for LV
-                - I <3 JavaScript
-                - Current obsession: Breath of the Wild
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## SPA???
+        - DevOps Engineer @ Trek10
+        - This is my 6th talk for LV
+        - I <3 JavaScript
+        - Current obsession: Breath of the Wild
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## SPA???
 
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Zen_SPA_Japanese_pool.jpg" alt="Drawing" style="height: 50vh"/>
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Brief (and incomplete) history of SPAs
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Zen_SPA_Japanese_pool.jpg" alt="Drawing"
+             style="height: 50vh"/>
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Brief (and incomplete) history of SPAs
 
-                - December 1995: VanillaJS ;)
-                - March 2005: Dojo Toolkit
-                - 2010: Knockout, Backbone, Angular 1
-                - December 2011: Ember
-                - March 2013: React
-                - February 2014: Vue 1
-                - September 2016: Angular 2, Vue 2
-                - Others I'm too lazy to find: Mithril, Cycle, Preact, Inferno, Aurelia
+        - December 1995: VanillaJS ;)
+        - March 2005: Dojo Toolkit
+        - 2010: Knockout, Backbone, Angular 1
+        - December 2011: Ember
+        - March 2013: React
+        - February 2014: Vue 1
+        - September 2016: Angular 2, Vue 2
+        - Others I'm too lazy to find: Mithril, Cycle, Preact, Inferno, Aurelia
 
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## [Vue.js](https://vuejs.org)
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## [Vue.js](https://vuejs.org)
 
-                - Created by Evan You
-                    - Xoogler, ex-meteorjs
-                - 18 kb minified and gzipped
-                - Angular 1-like templates
-                - Virtual DOM like React
-                - Flux pattern via Vuex
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Vue compared
+        - Created by Evan You
+          - Xoogler, ex-meteorjs
+        - 18 kb minified and gzipped
+        - Angular 1-like templates
+        - Virtual DOM like React
+        - Flux pattern via Vuex
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Vue compared
 
-                - Similar algorithms to React, but faster, lighter, and more automatic
-                    - No `shouldComponentUpdate` due to dependency tracking
-                - Support both HTML templates and JSX
-                - Use with or without ES2015+ or modern tooling like Webpack, ESLint, and other modern tooling
-                - One way data flow avoids complexity
-                - TypeScript friendly
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## [Library sizes minified and gzipped](https://gist.github.com/Restuta/cda69e50a853aa64912d)
+        - Similar algorithms to React, but faster, lighter, and more automatic
+          - No `shouldComponentUpdate` due to dependency tracking
+        - Support both HTML templates and JSX
+        - Use with or without ES2015+ or modern tooling like Webpack, ESLint, and other modern tooling
+        - One way data flow avoids complexity
+        - TypeScript friendly
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## [Library sizes minified and gzipped](https://gist.github.com/Restuta/cda69e50a853aa64912d)
 
-                Name  | Size
-                ------------- | -------------
-                Ember 2.2.0     | 111K
-                Angular 2       | 111K
-                Angular 1.4.5   |    51K
-                React 15.3.0 + React DOM | 43K
-                Vue 2.0.3 | **23K**
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## [Benchmarks](http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html)
+        Name  | Size
+        ------------- | -------------
+        Ember 2.2.0     | 111K
+        Angular 2       | 111K
+        Angular 1.4.5   |    51K
+        React 15.3.0 + React DOM | 43K
+        Vue 2.0.3 | **23K**
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## [Benchmarks](http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html)
 
-                Library | Mean slowdown | Library | Mean slowdown
-                ------------- | ------------- | ------------- | -------------
-                vanillajs | 1.00 | inferno | 1.07
-                vue 2 | 1.37 | aurelia | 1.66
-                vue 1 | 2.16 | mithril | 1.83
-                angular 1.5 | 2.62 | react 15.3 | 1.82
-                angular 2 | 1.85 | cyclejs 7 | 1.48
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Enough about the past. Let's talk
-                # /^vue(?:x)?$/
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Tooling
+        Library | Mean slowdown | Library | Mean slowdown
+        ------------- | ------------- | ------------- | -------------
+        vanillajs | 1.00 | inferno | 1.07
+        vue 2 | 1.37 | aurelia | 1.66
+        vue 1 | 2.16 | mithril | 1.83
+        angular 1.5 | 2.62 | react 15.3 | 1.82
+        angular 2 | 1.85 | cyclejs 7 | 1.48
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Enough about the past. Let's talk
+        # /^vue(?:x)?$/
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Tooling
 
-                - [vuex](https://github.com/vuejs/vuex)
-                - [vue-router](https://github.com/vuejs/vue-router)
-                - [vue-cli](https://github.com/vuejs/vue-cli)
-                - [Vue.js devtools for Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-                - [Awesome Vue](https://github.com/vuejs/awesome-vue)
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Bootstrapping
+        - [vuex](https://github.com/vuejs/vuex)
+        - [vue-router](https://github.com/vuejs/vue-router)
+        - [vue-cli](https://github.com/vuejs/vue-cli)
+        - [Vue.js devtools for Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Bootstrapping
 
+        <div style="float: left; width: 60%;">
+        <pre><code>&lt;div id="app1"&gt;
+          {{ message }}
+        &lt;/div&gt;
 
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Templates
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Filters
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Components
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Data()
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Props: {}
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Single file components
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Inner mechanics
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Slots and Refs
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Computed: {}
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Conditionals
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Lists
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Styling
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Events
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Lifecycle Hooks
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Forms
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Render functions
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## SSR/prerendering
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                # Vuex
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Flux
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Vuex
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Bootstrapping
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## State
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## The first rule of Vuex:
-                # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Getters
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Mutations
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## The second rule of Vuex:
-                # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Actions
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Modules
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Forms again
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Application structure
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Routing
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                # Thanks!
-                ## Questions?
-            </script>
-        </section>
-        <section data-markdown>
-            <script type="text/template">
-                ## Recommended resources
+        &lt;script src="/path/to/vue.js"&gt;
 
-                - Quasar
-                - Vuex book
-                - vue-router book
-            </script>
-        </section>
-    </div>
+        &lt;script&gt;
+        var app1 = new Vue({
+          el: '#app1',
+          data: {
+            message: 'Hello Vue!'
+          }
+        });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 40%;">
+          <div id="app1">
+            {{ message }}
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          app1 = new Vue({
+            el: '#app1',
+            data: {
+              message: 'Hello Vue!'
+            }
+          })
+        });
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Templates
+
+        - Like Angular, Vue's primarily uses templates to perform declarative rendering of our data
+        - Text: `<div>Hello {{firstName + ' ' + lastName }}</div>`
+          - Single expression only
+          - Very limited global access (`Math`, `Date`, etc)
+        - Raw HTML: `<div v-html="someHtml"></div>`
+        - Attributes: `<a v-bind:href="url">Your profile</a>`
+        - v-bind shorthand: `<a :href="url">Your profile</a>`
+          - Retains data type!
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Templates
+
+        <div style="float: left; width: 60%;">
+        <pre><code>&lt;div id="app2"&gt;
+          &lt;a :href="url"&gt;{{ destination }}&lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;script&gt;
+        var app2 = new Vue({
+          el: '#app2',
+          data: {
+            url: '//google.com',
+            destination: 'Google'
+          }
+        });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 40%;">
+          <div id="app2">
+            <a :href="url">{{ destination }}</a>
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          app2 = new Vue({
+            el: '#app2',
+            data: {
+              url: 'http://google.com',
+              destination: 'Google'
+            }
+          });
+        });
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Components
+
+        - Fundamental reusable Vue building block
+        - Global registration: `Vue.component('tag-name', { /* component definition */ });`
+          - Must register before creating root Vue instance (`new Vue(...)`)
+        - Using components:
+          - `<my-component></my-component>`
+          - Dynamic rendering: `<div :is="componentType"></div>`
+
+        <aside class="notes">
+          - global registration makes the registered component available to all other components <br />
+          - componentType for dynamic rendering can be string component name or actual component reference <br />
+
+        </aside>
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Single file components
+
+        - The `.vue` file: a single file component definition containing template, JS, and CSS
+        - Template must only have a single root element!
+        - Requires build process, e.g.: Webpack with [vue-loader](https://github.com/vuejs/vue-loader)
+
+        <pre><code>&lt;template&gt;
+          &lt;div&gt;
+            &lt;card-header :user="user"&gt;&lt;/card-header&gt;
+            {{bodyText}}
+          &lt;/div&gt;
+        &lt;/template&gt;
+
+        &lt;script&gt;
+          import CardHeader from './CardHeader';
+          export default {
+            name: 'Card',
+            components: { CardHeader },
+            data() { return { user: 'Alice', bodyText: 'Hello world!' }; }
+          };
+        &lt;/script&gt;
+
+        &lt;style scoped&gt;...&lt;/style&gt;</code></pre>
+        <aside class="notes">
+          - Highlight local registration: tag name based on import name! <br />
+          - Data as a function because each instance of a component needs separate data <br />
+          - Name is used for debugging <br />
+          - CSS only applies while component is part of current DOM
+          - Scoped CSS option: when scoped, styles only apply within the component <br />
+
+        </aside>
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        <h1>STOP!!!</h1>
+        <h1 class="fragment">GO BACK!</h1>
+        <div class="inline">
+          <h2 class="fragment">Didn't</h2>
+          <h2 class="fragment">he</h2>
+          <h2 class="fragment">do</h2>
+          <h2 class="fragment">app1.message?</h2>
+        </div>
+        <div class="inline">
+          <h2 class="fragment">Shouldn't</h2>
+          <h2 class="fragment">that</h2>
+          <h2 class="fragment">be</h2>
+          <h2 class="fragment">app1.data().message???</h2>
+        </div>
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        # Nope.
+        1) data is an object on the root Vue instance
+        2) things are not what you think they are
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## How the sausage is made
+
+        - Components are defined with POJOs
+        - Vue mangles all of your code with getter and setters for change tracking
+        - Your data, computed properties, props, and methods become part of the component instance
+        - Locally registered components and filters are available to the template as well
+        - Problem 1: `this`, `=>`, and lexical binding
+        - Problem 2: Adding new properties after the component is defined
+
+        ```
+        var vm = new Vue({
+        data: {
+        a: 1
+        }
+        })
+        // `vm.a` is now reactive
+        vm.b = 2
+        // `vm.b` is NOT reactive
+
+        ```
+
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Data()
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Props: {}
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Computed: {}
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Filters
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Slots
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Conditionals
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Lists
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Styling
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Events
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Lifecycle Hooks
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Forms
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        # Vuex
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Flux
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Vuex
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Bootstrapping
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## State
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## The first rule of Vuex:
+        # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Getters
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Mutations
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## The second rule of Vuex:
+        # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Actions
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Modules
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Forms again
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Application structure
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Routing
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        # Thanks!
+        ## Questions?
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Recommended resources
+
+        - [Awesome Vue](https://github.com/vuejs/awesome-vue)
+        - [Quasar](http://quasar-framework.org/)
+        - [Vue.js Guide](https://vuejs.org/v2/guide/)
+        - [Vuex book](https://vuex.vuejs.org/en/)
+        - [vue-router book](https://router.vuejs.org/en/)
+      </script>
+    </section>
+  </div>
 </div>
-
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
-
 <script>
   // More info https://github.com/hakimel/reveal.js#configuration
   Reveal.initialize({
     history: true,
+
+    width: 1440,
+    height: 900,
+    margin: 0.1,
 
     // More info https://github.com/hakimel/reveal.js#dependencies
     dependencies: [
       { src: 'plugin/markdown/marked.js' },
       { src: 'plugin/markdown/markdown.js' },
       { src: 'plugin/notes/notes.js', async: true },
-      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+      {
+        src: 'plugin/highlight/highlight.js',
+        async: true,
+        callback: function () {
+          $('code').each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        }
+      }
     ]
   });
+</script>
+<script>
+
 </script>
 </body>
 </html>
