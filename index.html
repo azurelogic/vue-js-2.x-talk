@@ -318,6 +318,7 @@
         ## Single file components
 
         - The `.vue` file: a single file component definition containing template, JS, and CSS
+        - The recommended way to write Vue, unless you have an advanced use case
         - Template must only have a single root element!
         - Requires build process, e.g.: Webpack with [vue-loader](https://github.com/vuejs/vue-loader)
 
@@ -790,13 +791,13 @@
         # Vuex
 
         <blockquote class="fragment">
-          Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import.
+          Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import. - [Vuex Guide](https://vuex.vuejs.org/en/intro.html)
         </blockquote>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Flux
+        ## Facebook's Flux
 
         <img src="flux.png" alt="Flux" style="height: 50vh"/>
       </script>
@@ -812,23 +813,62 @@
       <script type="text/template">
         ## Bootstrapping
 
+        - `store` is injected into all components as `this.$store`
 
+        <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="vuexBootstrapApp"&gt;
+          {{ $store.state.message }}
+        &lt;/div&gt;
+
+        &lt;script src="/path/to/vue.js"&gt;
+        &lt;script src="/path/to/vuex.js"&gt;
+
+        &lt;script&gt;
+        var store = new Vuex.Store({
+          state: {
+            message: 'Hello Vue!'
+          }
+        });
+
+        var vuexBootstrapApp = new Vue({
+          el: '#vuexBootstrapApp',
+          store // same as store: store
+        });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 30%;">
+          <div id="vuexBootstrapApp">
+            {{ $store.state.message }}
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          var store = new Vuex.Store({
+            state: {
+              message: 'Hello Vue!'
+            }
+          });
+
+          vuexBootstrapApp = new Vue({
+            el: '#vuexBootstrapApp',
+            store // same as store: store
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## State
+        ## State and getters
+
+        - State is a tree that acts as the "single source of truth" for the state of your app
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## The first rule of Vuex:
-        # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
-      </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
-        ## Getters
+        <h1 class="fragment">DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE</h1>
       </script>
     </section>
     <section data-markdown>
@@ -851,17 +891,22 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Modules
-      </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
         ## Forms and computed part deux
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Application structure
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Topics we missed
+
+        - Modules
+        - Strict Mode
+        - Plugins
+        - Hot Reloading
       </script>
     </section>
     <section data-markdown>
