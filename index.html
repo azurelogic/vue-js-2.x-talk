@@ -69,8 +69,7 @@
       <script type="text/template">
         ## SPA???
 
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Zen_SPA_Japanese_pool.jpg" alt="Drawing"
-             style="height: 50vh"/>
+        <img src="spa.jpg" alt="Spa" style="height: 50vh"/>
       </script>
     </section>
     <section data-markdown>
@@ -161,15 +160,15 @@
         ## Bootstrapping
 
         <div style="float: left; width: 70%;">
-        <pre><code>&lt;div id="app1"&gt;
+        <pre><code>&lt;div id="bootstrapApp"&gt;
           {{ message }}
         &lt;/div&gt;
 
         &lt;script src="/path/to/vue.js"&gt;
 
         &lt;script&gt;
-        var app1 = new Vue({
-          el: '#app1',
+        var bootstrapApp = new Vue({
+          el: '#bootstrapApp',
           data: {
             message: 'Hello Vue!'
           }
@@ -178,15 +177,15 @@
         </div>
 
         <div class="vue-output" style="float: right; width: 30%;">
-          <div id="app1">
+          <div id="bootstrapApp">
             {{ message }}
           </div>
         </div>
       </script>
       <script>
         Reveal.addEventListener('ready', function() {
-          app1 = new Vue({
-            el: '#app1',
+          bootstrapApp = new Vue({
+            el: '#bootstrapApp',
             data: {
               message: 'Hello Vue!'
             }
@@ -213,13 +212,13 @@
         ## Templates
 
         <div style="float: left; width: 70%;">
-        <pre><code>&lt;div id="app2"&gt;
+        <pre><code>&lt;div id="templateApp"&gt;
           &lt;a :href="url"&gt;{{ destination }}&lt;/a&gt;
         &lt;/div&gt;
 
         &lt;script&gt;
-        var app2 = new Vue({
-          el: '#app2',
+        var templateApp = new Vue({
+          el: '#templateApp',
           data: {
             url: '//google.com',
             destination: 'Google'
@@ -229,18 +228,69 @@
         </div>
 
         <div class="vue-output" style="float: right; width: 30%;">
-          <div id="app2">
+          <div id="templateApp">
             <a :href="url">{{ destination }}</a>
           </div>
         </div>
       </script>
       <script>
         Reveal.addEventListener('ready', function() {
-          app2 = new Vue({
-            el: '#app2',
+          templateApp = new Vue({
+            el: '#templateApp',
             data: {
               url: 'http://google.com',
               destination: 'Google'
+            }
+          });
+        });
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Computed properties
+
+        - Avoid jamming logic into your templates
+        - Computed properties magically track their dependencies and reactively recompute
+
+        <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="computedApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+        var computedApp = new Vue({
+            el: '#computedApp',
+            template: '<div><div>First: {{firstName}}</div>' +
+            '<div>Last: {{lastName}}</div>' +
+            '<div>Full: {{fullName}}</div></div>',
+            data: {
+              firstName: 'Rob',
+              lastName: 'Ribeiro'
+            },
+            computed: {
+              fullName() { return this.firstName + ' ' + this.lastName; }
+            }
+          });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="vue-output" style="float: right; width: 30%;">
+          <div id="computedApp">
+            <a :href="url">{{ destination }}</a>
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          computedApp = new Vue({
+            el: '#computedApp',
+            template: '<div><div>First: {{firstName}}</div>' +
+            '<div>Last: {{lastName}}</div>' +
+            '<div>Full: {{fullName}}</div></div>',
+            data: {
+              firstName: 'Rob',
+              lastName: 'Ribeiro'
+            },
+            computed: {
+              fullName() { return this.firstName + ' ' + this.lastName; }
             }
           });
         });
@@ -271,13 +321,12 @@
         - Template must only have a single root element!
         - Requires build process, e.g.: Webpack with [vue-loader](https://github.com/vuejs/vue-loader)
 
-        <pre><code>&lt;template&gt;
+        <div><pre><code>&lt;template&gt;
           &lt;div&gt;
             &lt;card-header :user="user"&gt;&lt;/card-header&gt;
             {{bodyText}}
           &lt;/div&gt;
         &lt;/template&gt;
-
         &lt;script&gt;
           import CardHeader from './CardHeader';
           export default {
@@ -286,8 +335,7 @@
             data() { return { user: 'Alice', bodyText: 'Hello world!' }; }
           };
         &lt;/script&gt;
-
-        &lt;style scoped&gt;...&lt;/style&gt;</code></pre>
+        &lt;style scoped&gt;...&lt;/style&gt;</code></pre></div>
         <aside class="notes">
           - Highlight local registration: tag name based on import name! <br />
           - Data as a function because each instance of a component needs separate data <br />
@@ -300,8 +348,8 @@
     <section data-markdown>
       <script type="text/template">
         <h1>STOP!!!</h1>
-        <h2 class="fragment">How did app1.message work???</h2>
-        <h2 class="fragment">Shouldn't it be app1.data.message or app1.data().message?</h2>
+        <h2 class="fragment">How did bootstrapApp.message work???</h2>
+        <h2 class="fragment">Shouldn't it be bootstrapApp.data.message or bootstrapApp.data().message?</h2>
       </script>
     </section>
     <section data-markdown>
@@ -344,7 +392,7 @@
           data() { return {...}; },
           props: {...},
           filters: {...}, // {{ timestamp | datetimeFilter }}
-          computed: {...}, // fullName() { return this.firstName + ' ' + this.lastName; }
+          computed: {...},
           methods: {...},
           mounted() {...} // or other lifecycle event
         }
@@ -355,12 +403,12 @@
       <script type="text/template">
         ## Props
 
-        - Avoid referencing parent components to maximize reuse
         - Props allow data to be passed down to children
-        - One way!
+        - Mantra: props down, events up
         - Can bind them in to reactively pass changing data down or to retain data type
         - camelCase props become kebab-case attributes
-        - Prop declaration can include validation: type, required, default, validator
+        - Prop declaration can include "validation": type, required, default, validator
+        - Avoid referencing parent components to maximize reuse
 
         ```
         props: ['userName', 'message'],
@@ -380,7 +428,7 @@
         ## Props
 
         <div style="float: left; width: 70%;">
-        <pre><code>&lt;div id="app3"&gt;&lt;/div&gt;
+        <pre><code>&lt;div id="propsApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
           var stringRenderer = {
@@ -389,8 +437,8 @@
             template: '<div>{{ toRender }}</div>'
           };
 
-          var app3 = new Vue({
-            el: '#app3',
+          var propsApp = new Vue({
+            el: '#propsApp',
             data: { text: 'Finish presentation', },
             components: { stringRenderer },
             template: '<div><string-renderer :to-render="text">'
@@ -400,7 +448,7 @@
         </div>
 
         <div class="vue-output" style="float: right; width: 30%;">
-          <div id="app3"></div>
+          <div id="propsApp"></div>
         </div>
       </script>
       <script>
@@ -411,8 +459,8 @@
             template: '<div>{{ toRender }}</div>'
           };
 
-          app3 = new Vue({
-            el: '#app3',
+          propsApp = new Vue({
+            el: '#propsApp',
             data: { text: 'Finish presentation', },
             components: { stringRenderer },
             template: '<string-renderer :to-render="text"></string-renderer>',
@@ -424,9 +472,26 @@
       <script type="text/template">
         ## Styling
 
+        ```
+        <div class="always-class" :class="{ 'sometimes-class': sometimesToggle }">stuff</div>
+        ```
+
+        ```
+        <div :style="{ width: someNumber }">more stuff</div>
+        ```
+
+        - Can even bind classes/styles on components, e.g.: `<card :class="{ red: isRed }"></card>`
+          - Applied to root element of template
+        - There is also an array based syntax for classes and styles
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Styling
+
         <div class="clearfix">
         <div style="float: left; width: 70%;">
-        <pre><code>&lt;div id="app4"&gt;&lt;/div&gt;
+        <pre><code>&lt;div id="classApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
           var stringRenderer = {
@@ -439,8 +504,8 @@
             }
           };
 
-          app4 = new Vue({
-            el: '#app4',
+          var classApp = new Vue({
+            el: '#classApp',
             data: { text: 'Finish presentation' },
             components: { renderer: stringRenderer },
             template: '<renderer :to-render="text"></renderer>',
@@ -449,12 +514,9 @@
         </div>
 
         <div class="vue-output" style="float: right; width: 30%;">
-          <div id="app4"></div>
+          <div id="classApp"></div>
         </div>
         </div>
-
-        - Can even bind classes/styles on components, e.g.: `<card :class="{ red: isRed }"></card>`
-          - Applied to root element of template
       </script>
       <script>
         Reveal.addEventListener('ready', function() {
@@ -468,8 +530,8 @@
             }
           };
 
-          app4 = new Vue({
-            el: '#app4',
+          classApp = new Vue({
+            el: '#classApp',
             data: { text: 'Finish presentation' },
             components: { stringRenderer },
             template: '<string-renderer :to-render="text"></string-renderer>',
@@ -480,31 +542,198 @@
     <section data-markdown>
       <script type="text/template">
         ## Forms
+
+        - Use `v-model` directive instead of `v-bind`
+        - Shorthand for binding + event to pass changes back to component
+
+        <div class="clearfix">
+          <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="formsApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var formsApp = new Vue({
+            el: '#formsApp',
+            data: { checked: false, message: '' },
+            template: '<div><input type="checkbox" v-model="checked" />' +
+            '<div>Checked: {{checked}}</div>' +
+            '<input v-model="message" placeholder="message" />' +
+            '<div>Message: {{message}}</div></div>',
+          });
+        &lt;/script&gt;</code></pre>
+          </div>
+
+          <div class="vue-output" style="float: right; width: 30%;">
+            <div id="formsApp"></div>
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          formsApp = new Vue({
+            el: '#formsApp',
+            data: { checked: false, message: '' },
+            template: '<div><input type="checkbox" v-model="checked" />' +
+            '<div>Checked: {{checked}}</div>' +
+            '<input v-model="message" placeholder="message" />' +
+            '<div>Message: {{message}}</div></div>',
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Conditionals
+
+        <div class="clearfix">
+          <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="ifApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var ifApp = new Vue({
+            el: '#ifApp',
+            data: { checked: false, message: '' },
+            template: '<div><input type="checkbox" v-model="checked" />' +
+            '<div v-if="checked">Yes</div>' +
+            '&lt;div v-else&gt;No&lt;/div&gt;' +
+            '<div v-show="checked">Now you see me!</div></div>',
+          });
+        &lt;/script&gt;</code></pre>
+          </div>
+
+          <div class="vue-output" style="float: right; width: 30%;">
+            <div id="ifApp"></div>
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          ifApp = new Vue({
+            el: '#ifApp',
+            data: { checked: false, message: '' },
+            template: '<div><input type="checkbox" v-model="checked" />' +
+            '<div v-if="checked">Yes</div>' +
+            '<div v-else>No</div>' +
+            '<div v-show="checked">You win a prize!</div></div>',
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Lists
+
+        - Render lists with `v-for` directive
+        - Can put `v-for` on HTML elements, templates, or components
+        - Source of list can be array, object, or range `v-for="x in 5"`
+        - Get index with `v-for="(item, index) in items"`
+
+        <div class="clearfix">
+          <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="listApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var listApp = new Vue({
+            el: '#listApp',
+            data: { items: [
+              'Finish presentation',
+              'Drink whiskey',
+              'Play Zelda'] },
+            template: '<div><ul>' +
+            '<li v-for="item in items">{{item}}</li>' +
+            '</ul></div>',
+          });
+        &lt;/script&gt;</code></pre>
+          </div>
+
+          <div class="vue-output" style="float: right; width: 30%;">
+            <div id="listApp"></div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          - Must bind a key for components <br />
+          - This does not pass data into components, still need bindings <br />
+        </aside>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          listApp = new Vue({
+            el: '#listApp',
+            data: { items: [
+              'Finish presentation',
+              'Drink whiskey',
+              'Play Zelda'] },
+            template: '<div><ul>' +
+            '<li v-for="item in items">{{item}}</li>' +
+            '</ul></div>',
+          });
+        });
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Events and methods
+
+        - 2 uses for events: interactivity and passing data up to parent components
+        - Methods are bound to events with `v-on`, e.g.: `<button v-on:click="someMethod">Click me</button>`
+        - Shorthand with `@`, e.g.: `<button @click="otherMethod(username)">Submit</button>`
+        - Component functions go in the `methods` property
+        ```
+        {
+          methods: {
+            someMethod() {...},
+            otherMethod(username) {...}
+          }
+        }
+        ```
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Computed properties
+        ## Events and methods
+
+        <div class="clearfix">
+          <div style="float: left; width: 70%;">
+        <pre><code>&lt;div id="eventApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+          var eventApp = new Vue({
+            el: '#eventApp',
+            template: '<div><button @click="popup()">Click me!</button>' +
+            '<div v-show="showMessage">You clicked!</div></div>',
+            data() { return {showMessage: false}; },
+            methods: {
+              popup() {
+               var self = this;
+               self.showMessage = true;
+               setTimeout(() => self.showMessage = false, 1000);
+              }
+            }
+          });
+        &lt;/script&gt;</code></pre>
+          </div>
+
+          <div class="vue-output" style="float: right; width: 30%;">
+            <div id="eventApp"></div>
+          </div>
+        </div>
       </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
-        ## Lifecycle Hooks
+      <script>
+        Reveal.addEventListener('ready', function() {
+          eventApp = new Vue({
+            el: '#eventApp',
+            template: '<div><button @click="popup()">Click me!</button>' +
+            '<div v-show="showMessage">You clicked!</div></div>',
+            data() { return {showMessage: false}; },
+            methods: {
+              popup() {
+                var self = this;
+                self.showMessage = true;
+                setTimeout(() => self.showMessage = false, 1000);
+              }
+            }
+          });
+        });
       </script>
     </section>
     <section data-markdown>
@@ -532,7 +761,6 @@
             &lt;card-header slot="header"&gt;&lt;/card-header&gt;
             &lt;span&gt;{{ message }}&lt;/span&gt;
         &lt;/card&gt;</code></pre>
-
       </script>
     </section>
     <section data-markdown>
@@ -540,6 +768,8 @@
         ## Advanced topics we missed
 
         - Refs
+        - Watchers
+        - Lifecycle Hooks
         - Filters
         - Custom directives
         - Transition effects
@@ -549,26 +779,40 @@
         - Server side rendering
         - Unit testing
         - Deployment
+        <aside class="notes">
+          - Lifecycle Hooks: know about mounted, updated, destroyed <br />
+          - Filters: use with bindings, takes in data and returns transformed value <br />
+        </aside>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         # Vuex
+
+        <blockquote class="fragment">
+          Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import.
+        </blockquote>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Flux
+
+        <img src="flux.png" alt="Flux" style="height: 50vh"/>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Vuex
+
+        <img src="vuex.png" alt="Vuex" style="height: 75vh"/>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Bootstrapping
+
+
       </script>
     </section>
     <section data-markdown>
@@ -601,6 +845,8 @@
     <section data-markdown>
       <script type="text/template">
         ## Actions
+
+        - Always return a Promise!!!
       </script>
     </section>
     <section data-markdown>
@@ -610,7 +856,7 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Forms again
+        ## Forms and computed part deux
       </script>
     </section>
     <section data-markdown>
