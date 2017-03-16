@@ -361,11 +361,13 @@
         </aside>
       </script>
     </section>
-    <section data-markdown>
+    <section data-markdown data-background-image="hammertime.gif">
       <script type="text/template">
+        <div class="stop">
         <h1>STOP!!!</h1>
         <h2 class="fragment">How did bootstrapApp.message work???</h2>
         <h2 class="fragment">Shouldn't it be bootstrapApp.data().message?</h2>
+        </div>
       </script>
     </section>
     <section data-markdown>
@@ -897,10 +899,10 @@
         export default {
           computed: {
             ...mapState({ // object syntax
-              aMessage: state => state.message,
-              theMessage: 'message',
+              aMessage: state => state.message, // access with this.aMessage
+              theMessage: 'message', // access with this.theMessage
             }),
-            ...mapState(['message']) // array syntax
+            ...mapState(['message']) // array syntax; access with this.message
           }
         };
         ```
@@ -915,22 +917,40 @@
     <section data-markdown>
       <script type="text/template">
         ## Mutations
-        
-        - Must be synchronous!
+
+        - In order for Vuex to do its job, all mutations to `state` go through the store's `mutations`
+        - Mutations are "committed": `store.commit('mutation name', valueToCommit)`
+        - Object style commit: `store.commit({ type: 'mutation name', value: valueToCommit})`
+        - There is a `mapMutations` helper to be used in a component's `methods` property
+        - Mutations must be synchronous!
+        - Best practice: use constants for your mutation names and store them together in a separate file
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Mutations
 
         <div class="clearfix">
         <div class="code-left">
         <pre><code>&lt;div id="vuexMutationApp"&gt;&lt;/div&gt;
-// todo fix this
         &lt;script&gt;
         var store = new Vuex.Store({
-          state: {
-            message: 'Hello Vue!'
+          state: { count: 0 },
+          mutations: {
+            increment(state, payload) { state.count += payload.amount; }
           }
         });
 
         var vuexMutationApp = new Vue({
           el: '#vuexMutationApp',
+          template: '<div>{{count}}' +
+          '<button @click="increment(1)">+1</button>' +
+          '<button @click="increment(10)">+10</button></div>',
+          methods: {
+            increment(value) {
+              this.$store.commit({type: 'increment', amount: value});
+            }
+          },
           store // same as store: store
         });
         &lt;/script&gt;</code></pre>
@@ -944,19 +964,23 @@
       <script>
         Reveal.addEventListener('ready', function() {
           var store = new Vuex.Store({
-            state: {
-              count: 0
-            },
+            state: { count: 0 },
             mutations: {
-              increment(state, payload) { state.count += payload; }
+              increment(state, payload) { state.count += payload.amount; }
             }
           });
 
-// todo fix this
           vuexMutationApp = new Vue({
             el: '#vuexMutationApp',
-            template: '<div>{{count}}<button @click="increment(10)"</div>',
-            store // same as store: store
+            template: '<div>{{ this.$store.state.count }}' +
+            '<button @click="increment(1)">+1</button>' +
+            '<button @click="increment(10)">+10</button></div>',
+            methods: {
+              increment(value) {
+                this.$store.commit({type: 'increment', amount: value});
+              }
+            },
+            store
           });
         });
       </script>
@@ -970,9 +994,31 @@
     <section data-markdown>
       <script type="text/template">
         ## Actions
-// todo fix this
 
+        - What if you need to commit multiple mutations together?
+        - What if you need to do something async and commit the result?
+        - Actions coordinate mutations and asynchronous operations
+        - Actions are dispatched: `store.dispatch('action name', valueToDispatch)
+        - Object style dispatch: `store.dispatch({ type: 'mutation name', value: valueToDispatch})`
         - Always return a Promise!
+
+        ```
+        var store = new Vuex.Store({
+          ...,
+          actions: {
+            incrementAsync (context, payload) { // context is similar to state but not the same
+              setTimeout(() => context.commit('increment'), 1000);
+            }
+          }
+        };
+        ```
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Vuex and external APIs
+
+        <img src="vuex.png" alt="Vuex" style="height: 75vh"/>
       </script>
     </section>
     <section data-markdown>
@@ -982,9 +1028,56 @@
         - `v-model` mutates properties directly
         - What are the 1st and 2nd rules of Vuex?
         - Computed properties with getters and setters to the rescue!
-// todo fix this
 
-        EXAMPLE NEEDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        <div class="clearfix">
+          <div class="code-left">
+        <pre><code>&lt;div id="vuexFormsApp"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+        var store = new Vuex.Store({
+          state: { message: 'Hello Vue!' },
+          mutations: { setMessage(state, mess) { state.message = mess; } }
+        });
+
+        var vuexFormsApp = new Vue({
+          el: '#vuexFormsApp',
+          template: '<div><input v-model="message" placeholder="message" />' +
+          '<div>Message: {{message}}</div></div>',
+          computed: {
+            message: {
+             get: function() { return this.$store.state.message; },
+             set: function(val) { this.$store.commit('setMessage', val); }
+            }
+          },
+          store
+        });
+        &lt;/script&gt;</code></pre>
+          </div>
+
+          <div class="output-right">
+            <div id="vuexFormsApp"></div>
+          </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          var store = new Vuex.Store({
+            state: { message: 'Hello Vue!' },
+            mutations: { setMessage(state, message) { state.message = message; } }
+          });
+          vuexFormsApp = new Vue({
+            el: '#vuexFormsApp',
+            template: '<div><input v-model="message" placeholder="message" />' +
+            '<div>Message: {{message}}</div></div>',
+            computed: {
+              message: {
+                get: function() { return this.$store.state.message; },
+                set: function(val) { this.$store.commit('setMessage', val); }
+              }
+            },
+            store
+          });
+        });
       </script>
     </section>
     <section data-markdown>

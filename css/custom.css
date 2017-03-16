@@ -41,6 +41,15 @@
     color: red;
 }
 
+.reveal .stop, .reveal .stop * {
+    color: magenta;
+    text-shadow:
+        -3px -3px 1px #000,
+        3px -3px 1px #000,
+        -3px 3px 1px #000,
+        3px 3px 1px #000;
+}
+
 button {
     display: inline-block;
     font-weight: 400;
@@ -55,4 +64,5 @@ button {
     border-radius: .25rem;
     color: #fff;
     background-color: #0275d8;
+    margin: 5px;
 }
