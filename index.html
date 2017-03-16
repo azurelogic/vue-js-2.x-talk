@@ -1,5 +1,5 @@
 <!doctype html>
-<!--suppress HtmlUnknownAttribute -->
+<!--suppress HtmlUnknownAttribute, XmlUnboundNsPrefix -->
 <html xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -84,7 +84,6 @@
         - February 2014: Vue 1
         - September 2016: Angular 2, Vue 2
         - Others I'm too lazy to find: Mithril, Cycle, Preact, Inferno, Aurelia
-
       </script>
     </section>
     <section data-markdown>
@@ -94,11 +93,10 @@
         - Created by Evan You
           - Xoogler, ex-meteorjs
         - 18 kb minified and gzipped
-        - Angular 1-like templates
+        - Angular 1 style templates
         - Virtual DOM like React
         - Flux pattern via Vuex
         - Neither prescriptive, nor monolithic
-          - So much so that this presentation contains multiple Vue apps!
       </script>
     </section>
     <section data-markdown>
@@ -123,7 +121,7 @@
         Angular 2       | 111K
         Angular 1.4.5   |    51K
         React 15.3.0 + React DOM | 43K
-        Vue 2.0.3 | **23K**
+        Vue 2.0.3 | **23K** (18K without compiler)
       </script>
     </section>
     <section data-markdown>
@@ -141,13 +139,23 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Enough about the past. Let's talk
+        ## Why you should give a crap
+
+        - Faster than React
+        - Easier than Angular
+        - More compact then either of them
+        - Gaining market and mind share rapidly
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Enough talk. Let's learn:
         # /^vue(?:x)?$/
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Tooling
+        ## Associated libraries and tooling
 
         - [vuex](https://github.com/vuejs/vuex)
         - [vue-router](https://github.com/vuejs/vue-router)
@@ -159,7 +167,8 @@
       <script type="text/template">
         ## Bootstrapping
 
-        <div style="float: left; width: 70%;">
+        <div class="clearfix">
+        <div class="code-left">
         <pre><code>&lt;div id="bootstrapApp"&gt;
           {{ message }}
         &lt;/div&gt;
@@ -176,10 +185,11 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="bootstrapApp">
             {{ message }}
           </div>
+        </div>
         </div>
       </script>
       <script>
@@ -198,7 +208,7 @@
         ## Templates
 
         - Like Angular, Vue's primarily uses templates to perform declarative rendering of our data
-        - Text: `<div>Hello {{firstName + ' ' + lastName }}</div>`
+        - Text: `<div>Hello {{ firstName + ' ' + lastName }}</div>`
           - Single expression only
           - Very limited global access (`Math`, `Date`, etc)
         - Raw HTML: `<div v-html="someHtml"></div>`
@@ -211,7 +221,8 @@
       <script type="text/template">
         ## Templates
 
-        <div style="float: left; width: 70%;">
+        <div class="clearfix">
+        <div class="code-left">
         <pre><code>&lt;div id="templateApp"&gt;
           &lt;a :href="url"&gt;{{ destination }}&lt;/a&gt;
         &lt;/div&gt;
@@ -227,10 +238,11 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="templateApp">
             <a :href="url">{{ destination }}</a>
           </div>
+        </div>
         </div>
       </script>
       <script>
@@ -251,8 +263,10 @@
 
         - Avoid jamming logic into your templates
         - Computed properties magically track their dependencies and reactively recompute
+        - Can do computed properties with getters and setters
 
-        <div style="float: left; width: 70%;">
+        <div class="clearfix">
+        <div class="code-left">
         <pre><code>&lt;div id="computedApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -272,10 +286,11 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="computedApp">
             <a :href="url">{{ destination }}</a>
           </div>
+        </div>
         </div>
       </script>
       <script>
@@ -350,19 +365,19 @@
       <script type="text/template">
         <h1>STOP!!!</h1>
         <h2 class="fragment">How did bootstrapApp.message work???</h2>
-        <h2 class="fragment">Shouldn't it be bootstrapApp.data.message or bootstrapApp.data().message?</h2>
+        <h2 class="fragment">Shouldn't it be bootstrapApp.data().message?</h2>
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         # Nope.
         1. `data` is an object on the root Vue instance
-        2. Even with components, things are not what you think they are
+        2. Even with components, things are not what you think they are...
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## How the sausage is made
+        ## How the reactive sausage is made
 
         - Root instance and components are defined with POJOs
         - Vue mangles all of your code with getter and setters for reactivity via change tracking
@@ -373,11 +388,11 @@
         - Problem 2: Adding new properties after the component is defined
 
         ```
-        var app = new Vue({ data: { a: 1, foo: {} } })
-        // app.a and app.foo are reactive
-        app.b = 2 // app.b is NOT reactive and there's no way to make it reactive
-        app.foo.x = 2 // app.foo.x is NOT reactive
-        Vue.set(app.foo, 'x', 2) // app.foo.x is now reactive
+        var app = new Vue({ data: { adults: 1, bar: {} } })
+        // app.adults and app.bar are reactive
+        app.children = 2 // app.b is NOT reactive and there's no way to make it reactive
+        app.bar.whiskey = 2 // app.bar.whiskey is NOT reactive
+        Vue.set(app.bar, 'whiskey', 2) // app.bar.whiskey is now reactive
         ```
       </script>
     </section>
@@ -428,7 +443,8 @@
       <script type="text/template">
         ## Props
 
-        <div style="float: left; width: 70%;">
+        <div class="clearfix">
+        <div class="code-left">
         <pre><code>&lt;div id="propsApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -448,8 +464,9 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="propsApp"></div>
+        </div>
         </div>
       </script>
       <script>
@@ -491,7 +508,7 @@
         ## Styling
 
         <div class="clearfix">
-        <div style="float: left; width: 70%;">
+        <div class="code-left">
         <pre><code>&lt;div id="classApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -507,14 +524,14 @@
 
           var classApp = new Vue({
             el: '#classApp',
-            data: { text: 'Finish presentation' },
+            data: { text: 'This is green?' },
             components: { renderer: stringRenderer },
             template: '<renderer :to-render="text"></renderer>',
           });
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="classApp"></div>
         </div>
         </div>
@@ -533,7 +550,7 @@
 
           classApp = new Vue({
             el: '#classApp',
-            data: { text: 'Finish presentation' },
+            data: { text: 'This is green?' },
             components: { stringRenderer },
             template: '<string-renderer :to-render="text"></string-renderer>',
           });
@@ -548,7 +565,7 @@
         - Shorthand for binding + event to pass changes back to component
 
         <div class="clearfix">
-          <div style="float: left; width: 70%;">
+        <div class="code-left">
         <pre><code>&lt;div id="formsApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -561,11 +578,11 @@
             '<div>Message: {{message}}</div></div>',
           });
         &lt;/script&gt;</code></pre>
-          </div>
+        </div>
 
-          <div class="vue-output" style="float: right; width: 30%;">
-            <div id="formsApp"></div>
-          </div>
+        <div class="output-right">
+          <div id="formsApp"></div>
+        </div>
         </div>
       </script>
       <script>
@@ -586,7 +603,7 @@
         ## Conditionals
 
         <div class="clearfix">
-          <div style="float: left; width: 70%;">
+        <div class="code-left">
         <pre><code>&lt;div id="ifApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -599,12 +616,16 @@
             '<div v-show="checked">Now you see me!</div></div>',
           });
         &lt;/script&gt;</code></pre>
-          </div>
-
-          <div class="vue-output" style="float: right; width: 30%;">
-            <div id="ifApp"></div>
-          </div>
         </div>
+
+        <div class="output-right">
+          <div id="ifApp"></div>
+        </div>
+        </div>
+
+        - There is also a `v-else-if` directive
+        - `v-else-if` and `v-else` must be immediate sibling elements to the element with `v-if`
+        - `v-if` vs `v-show`
       </script>
       <script>
         Reveal.addEventListener('ready', function() {
@@ -614,7 +635,7 @@
             template: '<div><input type="checkbox" v-model="checked" />' +
             '<div v-if="checked">Yes</div>' +
             '<div v-else>No</div>' +
-            '<div v-show="checked">You win a prize!</div></div>',
+            '<div v-show="checked">Now you see me!</div></div>',
           });
         });
       </script>
@@ -629,7 +650,7 @@
         - Get index with `v-for="(item, index) in items"`
 
         <div class="clearfix">
-          <div style="float: left; width: 70%;">
+        <div class="code-left">
         <pre><code>&lt;div id="listApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
@@ -644,11 +665,11 @@
             '</ul></div>',
           });
         &lt;/script&gt;</code></pre>
-          </div>
+        </div>
 
-          <div class="vue-output" style="float: right; width: 30%;">
-            <div id="listApp"></div>
-          </div>
+        <div class="output-right">
+          <div id="listApp"></div>
+        </div>
         </div>
 
         <aside class="notes">
@@ -677,8 +698,9 @@
 
         - 2 uses for events: interactivity and passing data up to parent components
         - Methods are bound to events with `v-on`, e.g.: `<button v-on:click="someMethod">Click me</button>`
-        - Shorthand with `@`, e.g.: `<button @click="otherMethod(username)">Submit</button>`
+        - `v-on` shorthand: `<button @click="otherMethod(username)">Submit</button>`
         - Component functions go in the `methods` property
+
         ```
         {
           methods: {
@@ -694,14 +716,14 @@
         ## Events and methods
 
         <div class="clearfix">
-          <div style="float: left; width: 70%;">
+          <div class="code-left">
         <pre><code>&lt;div id="eventApp"&gt;&lt;/div&gt;
 
         &lt;script&gt;
           var eventApp = new Vue({
             el: '#eventApp',
             template: '<div><button @click="popup()">Click me!</button>' +
-            '<div v-show="showMessage">You clicked!</div></div>',
+            '<div v-show="showMessage">Get off my lawn!</div></div>',
             data() { return {showMessage: false}; },
             methods: {
               popup() {
@@ -714,7 +736,7 @@
         &lt;/script&gt;</code></pre>
           </div>
 
-          <div class="vue-output" style="float: right; width: 30%;">
+          <div class="output-right">
             <div id="eventApp"></div>
           </div>
         </div>
@@ -724,7 +746,7 @@
           eventApp = new Vue({
             el: '#eventApp',
             template: '<div><button @click="popup()">Click me!</button>' +
-            '<div v-show="showMessage">You clicked!</div></div>',
+            '<div v-show="showMessage">Get off my lawn!</div></div>',
             data() { return {showMessage: false}; },
             methods: {
               popup() {
@@ -791,7 +813,7 @@
         # Vuex
 
         <blockquote class="fragment">
-          Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import. - [Vuex Guide](https://vuex.vuejs.org/en/intro.html)
+          Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import. - [Vuex book](https://vuex.vuejs.org/en/intro.html)
         </blockquote>
       </script>
     </section>
@@ -814,8 +836,10 @@
         ## Bootstrapping
 
         - `store` is injected into all components as `this.$store`
+        - `store` does not get mangled like components do
 
-        <div style="float: left; width: 70%;">
+        <div class="clearfix">
+        <div class="code-left">
         <pre><code>&lt;div id="vuexBootstrapApp"&gt;
           {{ $store.state.message }}
         &lt;/div&gt;
@@ -837,10 +861,11 @@
         &lt;/script&gt;</code></pre>
         </div>
 
-        <div class="vue-output" style="float: right; width: 30%;">
+        <div class="output-right">
           <div id="vuexBootstrapApp">
             {{ $store.state.message }}
           </div>
+        </div>
         </div>
       </script>
       <script>
@@ -860,12 +885,28 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## State and getters
+        ## State
 
-        - State is a tree that acts as the "single source of truth" for the state of your app
+        - `state` is a tree that acts as the "single source of truth" for the state of your app
+        - If your components were a single function and the return value was your page, `state` is the main parameter to that function
+        - `state` is reactive
+        - `mapState()` helps you turn state properties into computed component properties
+
+        ```
+        import { mapState } from 'vuex';
+        export default {
+          computed: {
+            ...mapState({ // object syntax
+              aMessage: state => state.message,
+              theMessage: 'message',
+            }),
+            ...mapState(['message']) // array syntax
+          }
+        };
+        ```
       </script>
     </section>
-    <section data-markdown>
+    <section data-markdown data-background-image="fightclub.gif">
       <script type="text/template">
         ## The first rule of Vuex:
         <h1 class="fragment">DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE</h1>
@@ -874,44 +915,116 @@
     <section data-markdown>
       <script type="text/template">
         ## Mutations
+        
+        - Must be synchronous!
+
+        <div class="clearfix">
+        <div class="code-left">
+        <pre><code>&lt;div id="vuexMutationApp"&gt;&lt;/div&gt;
+// todo fix this
+        &lt;script&gt;
+        var store = new Vuex.Store({
+          state: {
+            message: 'Hello Vue!'
+          }
+        });
+
+        var vuexMutationApp = new Vue({
+          el: '#vuexMutationApp',
+          store // same as store: store
+        });
+        &lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="output-right">
+          <div id="vuexMutationApp"></div>
+        </div>
+        </div>
+      </script>
+      <script>
+        Reveal.addEventListener('ready', function() {
+          var store = new Vuex.Store({
+            state: {
+              count: 0
+            },
+            mutations: {
+              increment(state, payload) { state.count += payload; }
+            }
+          });
+
+// todo fix this
+          vuexMutationApp = new Vue({
+            el: '#vuexMutationApp',
+            template: '<div>{{count}}<button @click="increment(10)"</div>',
+            store // same as store: store
+          });
+        });
       </script>
     </section>
-    <section data-markdown>
+    <section data-markdown data-background-image="fightclub.gif">
       <script type="text/template">
         ## The second rule of Vuex:
-        # DON'T TRY TO CHANGE STATE FROM OUTSIDE OF THE STORE
+        # DON'T CHANGE STATE FROM OUTSIDE OF THE STORE
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Actions
+// todo fix this
 
-        - Always return a Promise!!!
+        - Always return a Promise!
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Forms and computed part deux
+
+        - `v-model` mutates properties directly
+        - What are the 1st and 2nd rules of Vuex?
+        - Computed properties with getters and setters to the rescue!
+// todo fix this
+
+        EXAMPLE NEEDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Application structure
+
+        ```
+        ├── index.html
+        ├── main.js
+        ├── api
+        │   └── ... # abstractions for making API requests
+        ├── components
+        │   ├── App.vue
+        │   ├── ComponentGroupA
+        │   |   ├── ComponentA1
+        │   |   └── ...
+        │   ├── ComponentGroupB
+        │   |   ├── ComponentB1
+        │   |   └── ...
+        │   └── ...
+        └── store                 # can start with store.js for small apps
+            ├── index.js          # where we assemble modules and export the store
+            ├── actions.js        # root actions
+            ├── mutations.js      # root mutations
+            ├── mutationtypes.js  # mutation constants
+            └── modules
+                ├── cart.js       # cart module
+                └── products.js   # products module
+        ```
       </script>
     </section>
     <section data-markdown>
       <script type="text/template">
         ## Topics we missed
 
+        - Getters
         - Modules
         - Strict Mode
         - Plugins
         - Hot Reloading
-      </script>
-    </section>
-    <section data-markdown>
-      <script type="text/template">
-        ## Routing
       </script>
     </section>
     <section data-markdown>
